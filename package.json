@@ -1,5 +1,5 @@
 {
-  "name": "finalproject",
+  "name": "devjobtracker",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -8,7 +8,7 @@
     "lint": "echo \"Error: no lint specified\" && exit 0",
     "test": "echo \"Error: no test specified\" && exit 0",
     "format": "echo \"Error: no format specified\" && exit 0"
-},
+  },
   "author": "",
   "license": "ISC"
 }
