@@ -6,7 +6,7 @@ function App() {
       
       <div>
         <div>
-          <img src='./src/assets/diagram.jpg' className='diagram'/>
+          <img src='/src/assets/diagram.jpg' className='diagram'/>
         </div>
 
         <div className='mvp'>
