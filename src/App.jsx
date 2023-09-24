@@ -1,33 +1,29 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
     <>
+      
       <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+        <div>
+          <img src='src\assets\diagram.jpg' className='diagram'/>
+        </div>
+
+        <div className='mvp'>
+          <h1>Minimum Viable Product</h1>
+          <p>Our website is basically a job tracking tool that will allow developers to keep track of the jobs they applied to. Tech Stacks we plan to use are:</p>
+
+          <p>React for front end</p>
+          <p>Express for back end server</p>
+          <p>Supabase for the database</p>
+          <p>Node for the JavaScript run-time environment</p>
+
+          <p>As for website features, we plan on:
+          Allowing users to create an account that will be stored in the database
+          The API endpoints will have middleware security
+          The user should be able to upload the job they applied to that will store it in a list of jobs they applied.</p>
+        </div>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
   )
 }

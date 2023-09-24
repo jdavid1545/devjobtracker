@@ -4,6 +4,8 @@
 
 # Alejandro Rodriguez - arodr231@uic.edu
 
+# Link to live website: https://zesty-stroopwafel-eacbd1.netlify.app/
+
 # https://github.com/derppop/devjobtracker
 
 If you have a private repository, please add `kaytwo` and `sauravjoshi` as collaborators.
