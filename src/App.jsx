@@ -1,4 +1,5 @@
 import './App.css'
+import diagram from './assets/diagram.jpg'
 
 function App() {
   return (
@@ -6,7 +7,7 @@ function App() {
       
       <div>
         <div>
-          <img src='/src/assets/diagram.jpg' className='diagram'/>
+          <img src={diagram} className='diagram'/>
         </div>
 
         <div className='mvp'>
