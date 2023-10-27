@@ -1,9 +1,9 @@
 @import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,700;0,800;1,300;1,500;1,700;1,800&display=swap");
 
 :root {
-  --background-color: #0B2447;
-  --foreground-color: #19376D;
-  --accent-color: #A5D7E8;
+  --background-color: #2c2930;
+  --foreground-color: #201a30;
+  --accent-color: #0df5e3;
 }
 
 * {
@@ -66,24 +66,27 @@ button {
   flex-direction: column;
   align-items: center; /* Center horizontally */
   justify-content: center; /* Center vertically */
-  height: 100vh; /* Full viewport height */
+  /* height: 100vh; Full viewport height */
 }
 
 .login-container {
   display: flex;
   flex-direction: column;
   width: 100%; /* Use full width of the container */
-  max-width: 450px; /* Adjust as needed */
+  max-width: 300px; /* Adjust as needed */
   padding: 20px;
   border: 3px solid var(--foreground-color);
   border-radius: 20px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  box-shadow: 5px 8px 10px 5px rgb(0 0 0 / 20%);
   text-align: center; /* Center the contents horizontally */
-  background-color: var(--background-color);
+  background-color: var(--foreground-color);
+  margin-top:10px;
+  height:45vh;
 }
 
 .new-user-container {
   align-items: center;
+  /* height: 50%; */
 }
 .login-container h2 {
   text-align: center;
@@ -96,13 +99,23 @@ button {
 }
 
 #loginForm .btn {
-  margin: 10px auto; /* Adjust the margin as needed */
+  color:#201a30;
   border: solid 0.5px rgba(255, 255, 255, 0.5);
-  background-color: var(--foreground-color);
+  background-color: var(--accent-color);
   border-radius: 20px;
-  padding: 10px 15px 10px 15px;
-  margin: 10px;
+  padding: 15px 30px 15px 30px;
+  margin-bottom: 10px;
 }
+
+#registerForm .btn {
+  color:#201a30;
+  border: solid 0.5px rgba(255, 255, 255, 0.5);
+  background-color: var(--accent-color);
+  border-radius: 20px;
+  padding: 15px 30px 15px 30px;
+  margin-bottom: 10px;
+}
+
 #registerButton {
   margin-top: 10px; /* Add spacing between the buttons and the password field */
 }
@@ -122,13 +135,14 @@ button {
 .create-user {
   display: flex;
   flex-direction: column;
-  width: 800px;
+  max-width: 400px;
   padding: 50px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  border: 3px solid var(--foreground-color);
+  border-radius: 20px;
+  box-shadow: 5px 8px 10px 5px rgb(0 0 0 / 20%);
   margin: auto;
   margin-top: 30px;
+  background-color: var(--foreground-color);
 }
 
 .form-title {
@@ -156,4 +170,41 @@ select {
 
 select option {
   color: #3e3434;
+}
+
+.form-control {
+  box-sizing: border-box; 
+  margin-top:10px;
+  margin-bottom:10px;
+}
+.form-outline {
+  box-sizing: border-box; 
+  margin-top:10px;
+  margin-bottom:10px;
+}
+
+::placeholder {
+  color: white;
+}
+
+.top-icon {
+  margin: auto;
+  font-size: 50px
+}
+
+.site-title {
+  text-align: center;
+}
+
+.divider {
+  width:90%;
+  background-color: rgb(111, 111, 111);
+  border: none;
+  height: 1px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.login-button {
+  margin-top:20px;
 }

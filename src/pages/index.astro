@@ -15,41 +15,47 @@ if (Astro.cookies.has("session")) {
 
 <Layout title="Sign in">
   <body>
+    <h1 class="site-title">Dev Job Tracker</h1>
     <div class="container">
       <div class="container mt-5 login-container">
-        <h2>DevJobTracker</h2>
+        <i class="fa-solid fa-lock top-icon"></i>
         <form id="loginForm" action="/api/auth/signin" method="post">
           <div class="form-group">
-            <label for="emailId">Email ID:</label>
+            <!-- <label for="emailId">Email:</label> -->
             <input
               type="text"
               class="form-control"
               id="emailId"
               name="email"
+              placeholder="email"
               required
             />
           </div>
           <div class="form-group">
-            <label for="password">Password:</label>
+            <!-- <label for="password">Password:</label> -->
             <input
               type="password"
               class="form-control"
               id="password"
               name="password"
+              placeholder="password"
               required
             />
           </div>
-          <button id="loginButton" type="submit" class="btn btn-primary">
+          <button
+            id="loginButton"
+            type="submit"
+            class="btn btn-primary login-button"
+          >
             Login
           </button>
+          <hr class="divider" />
+          <button id="registerButton" class="btn btn-primary"> Register</button>
         </form>
+
         <div class="hidden-info mt-3">
           <p id="msg-for-failure"></p>
         </div>
-      </div>
-      <div class="container mt-3 new-user-container">
-        <p>Not yet signed up? Click here to create your account.</p>
-        <a href="/register" class="btn btn-primary">Create Account</a>
       </div>
     </div>
   </body>
@@ -73,11 +79,11 @@ if (Astro.cookies.has("session")) {
   auth.setPersistence(inMemoryPersistence);
 
   const form = document.querySelector("form") as HTMLFormElement;
-  // const registerButton = document.getElementById("registerButton");
+  const registerButton = document.getElementById("registerButton");
 
-  // registerButton!.addEventListener("click", () => {
-  //   window.location.assign("/register");
-  // });
+  registerButton!.addEventListener("click", () => {
+    window.location.assign("/register");
+  });
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();

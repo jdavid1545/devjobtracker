@@ -15,35 +15,25 @@ if (Astro.cookies.has("session")) {
 
 <Layout title="Register">
   <body>
+    <h1 class="site-title">Dev Job Tracker</h1>
     <div class="create-user">
-      <h1 class="form-title">Create a New User</h1>
-      <form action="/api/auth/register" method="post">
+      <i class="fa-solid fa-user-plus top-icon"></i>
+      <form action="/api/auth/register" method="post" id="registerForm">
         <div class="form-outline mb-4">
-          <label for="name">Name</label>
-          <input
-            id="name"
-            name="name"
-            class="form-control"
-            placeholder="Enter First Name"
-          />
-        </div>
-        <div class="form-outline mb-4">
-          <label for="email">Email Id</label>
           <input
             id="email"
             name="email"
             class="form-control"
-            placeholder="Enter Email ID"
+            placeholder="email"
           />
         </div>
         <div class="form-outline mb-4">
-          <label for="password">Password</label>
           <input
             id="password"
             type="password"
             name="password"
             class="form-control"
-            placeholder="Enter Password"
+            placeholder="Password"
           />
         </div>
         <button
@@ -52,9 +42,9 @@ if (Astro.cookies.has("session")) {
           class="btn btn-primary"
           style="margin-top: 10px"
         >
-          Submit
+          Register
         </button>
-        <a href="/" class="btn btn-primary">Continue to Login</a>
+        <a href="/">Continue to Login</a>
         <div class="hidden-info">
           <p id="msg-for-failure-sucess"></p>
         </div>
@@ -68,19 +58,17 @@ if (Astro.cookies.has("session")) {
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
     const formData = new FormData(form);
-    const name = formData.get("name")?.toString();
     const email = formData.get("email")?.toString();
     const password = formData.get("password")?.toString();
 
     console.log(email);
-    if (!email || !password || !name) {
+    if (!email || !password) {
       const errorMessage = document.getElementById("msg-for-failure");
       errorMessage!.innerText = "Please enter a name, email, and password";
       return;
     }
     try {
       const registerRequest = {
-        name: name,
         email: email,
         password: password,
       };
