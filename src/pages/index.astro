@@ -50,7 +50,9 @@ if (Astro.cookies.has("session")) {
             Login
           </button>
           <hr class="divider" />
-          <button id="registerButton" class="btn btn-primary"> Register</button>
+          <button id="register-button" class="btn btn-primary">
+            Register</button
+          >
         </form>
 
         <div class="hidden-info mt-3">
@@ -79,7 +81,7 @@ if (Astro.cookies.has("session")) {
   auth.setPersistence(inMemoryPersistence);
 
   const form = document.querySelector("form") as HTMLFormElement;
-  const registerButton = document.getElementById("registerButton");
+  const registerButton = document.getElementById("register-button");
 
   registerButton!.addEventListener("click", () => {
     window.location.assign("/register");

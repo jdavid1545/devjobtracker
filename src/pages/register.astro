@@ -25,6 +25,7 @@ if (Astro.cookies.has("session")) {
             name="email"
             class="form-control"
             placeholder="email"
+            required
           />
         </div>
         <div class="form-outline mb-4">
@@ -34,6 +35,7 @@ if (Astro.cookies.has("session")) {
             name="password"
             class="form-control"
             placeholder="Password"
+            required
           />
         </div>
         <button
@@ -44,7 +46,10 @@ if (Astro.cookies.has("session")) {
         >
           Register
         </button>
-        <a href="/">Continue to Login</a>
+        <hr class="divider" />
+        <button id="login-button" class="btn btn-primary login-button">
+          Continue to Login</button
+        >
         <div class="hidden-info">
           <p id="msg-for-failure-sucess"></p>
         </div>
@@ -54,6 +59,11 @@ if (Astro.cookies.has("session")) {
 </Layout>
 <script>
   const form = document.querySelector("form") as HTMLFormElement;
+  const loginButton = document.getElementById("login-button");
+
+  loginButton!.addEventListener("click", () => {
+    window.location.assign("/");
+  });
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();

@@ -10,3 +10,7 @@ export type RequestEntry = {
     company: String,
     timestamp: Date
 }
+
+export type DashboardProps = {
+    email: string
+}

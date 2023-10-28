@@ -1,9 +1,23 @@
 ---
+import { app } from "../firebase/server";
+import { getAuth } from "firebase-admin/auth";
 import Layout from "../layouts/Layout.astro";
+import App from "../devJobTracker/src/App.tsx";
+const auth = getAuth(app);
+
+/* Check current session */
+if (!Astro.cookies.has("session")) {
+  return Astro.redirect("/");
+}
+const sessionCookie = Astro.cookies.get("session")!.value;
+const decodedCookie = await auth.verifySessionCookie(sessionCookie);
+const user = await auth.getUser(decodedCookie.uid);
+
+if (!user) {
+  return Astro.redirect("/");
+}
 ---
 
-<Layout title="Dashboard">
-  <html>
-    <p>Welcome to the dashboard</p>
-  </html>
+<Layout title="dashboard">
+  <App client:only="react" email={user.email!} />
 </Layout>
