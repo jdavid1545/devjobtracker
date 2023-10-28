@@ -1,7 +1,30 @@
 import { type SetStateAction, useEffect, useState } from "react";
-import type { DashboardProps } from "../../../util/types.ts";
+import type { emailProp } from "../../../util/types.ts";
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
 import Table from './Table.tsx'
-function Dashboard({email}: DashboardProps) {
+import Form from 'react-bootstrap/Form';
+function Dashboard({email}: emailProp) {
+    const [showInsert, setShowInsert] = useState(false);
+    const handleCloseInsert = () => setShowInsert(false);
+    const [type, setType] = useState('');
+    const [company, setCompany] = useState('');
+    const [date, setDate] = useState('');
+    const [time, setTime] = useState('');
+    const handlesetShowInsert = () => {
+        setShowInsert(true);
+    }
+
+    const handleTypeChange = (e) => setType(e.target.value);
+    const handleCompanyChange = (e) => setCompany(e.target.value);
+    const handleDateChange = (e) => setDate(e.target.value);
+    const handleTimeChange = (e) => setTime(e.target.value);
+
+    const handleInsertEntry = async (e) => {
+        e.preventDefault();
+        
+    };
+
     return (
         <div className="app">
             <div className="container-fluid">
@@ -24,6 +47,8 @@ function Dashboard({email}: DashboardProps) {
                                 <li className="nav-item py-2 py-sm-0">
                                     <a href="#" className="nav-link text-white fa-grid-2">Applications</a>
                                 </li>
+                                <hr></hr>
+                                    <button type="button" onClick={() => handlesetShowInsert()} className="accent-color text-black">Insert Entry</button>
                             </ul>
                         </div>
                         <div className="dropdown open p-3">
@@ -42,6 +67,43 @@ function Dashboard({email}: DashboardProps) {
                     </div>
                 </div>
             </div>
+
+            <Modal show={showInsert} onHide={handleCloseInsert} className="delete-modal">
+                <Modal.Header closeButton>
+                    <Modal.Title>Insert Entry</Modal.Title>
+                </Modal.Header>
+                    <Modal.Body>
+                    <Form onSubmit={handleInsertEntry}>
+                        <Form.Group className="mb-3" controlId="type">
+                            <Form.Label>Type of entry</Form.Label>
+                            <Form.Select>
+                                <option>Application</option>
+                                <option>Online Assesment</option>
+                                <option>Interview</option>
+                            </Form.Select>
+                        </Form.Group>
+
+                        <Form.Group className="mb-3" controlId="company">
+                            <Form.Label>Company</Form.Label>
+                            <Form.Control placeholder="Company Name" />
+                        </Form.Group>
+
+                        <Form.Group className="mb-3" controlId="date">
+                            <Form.Label>Date</Form.Label>
+                            <Form.Control type="date" />
+                        </Form.Group>
+
+                        <Form.Group className="mb-3" controlId="time">
+                            <Form.Label>Time</Form.Label>
+                            <Form.Control type="time" />
+                        </Form.Group>
+
+                        <Button variant="primary" type="submit" className="accent-color text-black">
+                            Submit
+                        </Button>
+                    </Form>
+                    </Modal.Body>
+            </Modal>
         </div>
     )
 }

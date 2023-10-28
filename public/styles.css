@@ -242,6 +242,7 @@ select option {
 
 .main-content {
   margin-left: 15%;
+  max-width:85%;
 }
 
 .no-overflow {
@@ -250,4 +251,12 @@ select option {
 
 .background-color {
   background-color: var(--background-color);
+}
+
+.delete-modal .modal-content{
+  background-color: var(--background-color);
+}
+
+.accent-color {
+  background-color: var(--accent-color);
 }
