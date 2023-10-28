@@ -11,6 +11,6 @@ export type RequestEntry = {
     timestamp: Date
 }
 
-export type DashboardProps = {
+export type emailProp = {
     email: string
 }
