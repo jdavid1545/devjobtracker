@@ -1,10 +1,13 @@
 import { type SetStateAction, useEffect, useState } from "react";
-import type { emailProp } from "../../../util/types.ts";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Table from "./Table.tsx";
 import Form from "react-bootstrap/Form";
-import { RequestEntry } from "../../../util/types.ts";
+import type {
+  DisplayEntry,
+  RequestEntry,
+  emailProp,
+} from "../../../util/types.ts";
 
 function Dashboard({ email }: emailProp) {
   const [showInsert, setShowInsert] = useState(false);
@@ -12,6 +15,7 @@ function Dashboard({ email }: emailProp) {
   const [company, setCompany] = useState("");
   const [date, setDate] = useState<string>("");
   const [time, setTime] = useState(new Date().toLocaleTimeString());
+  const [previousEntries, setPreviousEntries] = useState<DisplayEntry[]>([]);
 
   const handleCloseInsert = () => setShowInsert(false);
   const handlesetShowInsert = () => {
@@ -19,7 +23,6 @@ function Dashboard({ email }: emailProp) {
   };
 
   const handleTypeChange = (value: string) => {
-    // const type: string = e?.toString() as string;
     setEntryType(value);
     console.log(`Selected type: ${value}`);
   };
@@ -61,10 +64,12 @@ function Dashboard({ email }: emailProp) {
         const response = await fetch(`api/entry/getEntries?email=${email}`, {
           method: "GET",
         });
-        // TODO, dislay entries
+        // TODO: dislay entries
+        const displayData: DisplayEntry[] = await response.json();
+        setPreviousEntries(displayData);
+      } catch (error) {
+        console.error(error);
       }
-
-
     }
   }, [email]);
 
