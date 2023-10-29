@@ -11,7 +11,7 @@ export const GET: APIRoute = async ({ request }) => {
     console.log(`Email in getChat request is: ${email}`);
   } catch (error) {
     console.error(error);
-    return new Response("Something went wrong", {
+    return new Response("Something went wrong.", {
       status: 500,
     });
   }

@@ -1,16 +1,16 @@
 export type DisplayEntry = {
-    type: String,
-    company: String,
-    timestamp: Date
-}
+  type: String;
+  company: String;
+  timestamp: Date;
+};
 
 export type RequestEntry = {
-    email: String,
-    type: String,
-    company: String,
-    timestamp: Date
-}
+  email: String;
+  entryType: String;
+  company: String;
+  timestamp: Date;
+};
 
 export type emailProp = {
-    email: string
-}
+  email: string;
+};

@@ -4,24 +4,55 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Table from "./Table.tsx";
 import Form from "react-bootstrap/Form";
+import { RequestEntry } from "../../../util/types.ts";
+
 function Dashboard({ email }: emailProp) {
   const [showInsert, setShowInsert] = useState(false);
-  const handleCloseInsert = () => setShowInsert(false);
-  const [type, setType] = useState("");
+  const [entryType, setEntryType] = useState("");
   const [company, setCompany] = useState("");
-  const [date, setDate] = useState("");
-  const [time, setTime] = useState("");
+  const [date, setDate] = useState<string>("");
+  const [time, setTime] = useState(new Date().toLocaleTimeString());
+
+  const handleCloseInsert = () => setShowInsert(false);
   const handlesetShowInsert = () => {
     setShowInsert(true);
   };
 
-  const handleTypeChange = (e) => setType(e.target.value);
-  const handleCompanyChange = (e) => setCompany(e.target.value);
-  const handleDateChange = (e) => setDate(e.target.value);
-  const handleTimeChange = (e) => setTime(e.target.value);
+  const handleTypeChange = (value: string) => {
+    // const type: string = e?.toString() as string;
+    setEntryType(value);
+    console.log(`Selected type: ${value}`);
+  };
+  const handleCompanyChange = (value: string) => setCompany(value);
+  const handleDateChange = (value: string) => {
+    setDate(value.toString());
+    console.log(`Selected date: ${value}`);
+  };
+  // const handleTimeChange = (value: string) => setTime(value);
 
-  const handleInsertEntry = async (e) => {
-    e.preventDefault();
+  const handleInsertEntry = async () => {
+    // e.preventDefault();
+    try {
+      const requestBody: RequestEntry = {
+        email: email,
+        entryType: entryType,
+        company: company,
+        timestamp: new Date(date),
+      };
+
+      const response = await fetch("api/entry/insertEntry", {
+        method: "POST",
+        body: JSON.stringify(requestBody),
+      });
+
+      if (response.status == 200) {
+        // TODO: update entrylist
+      } else {
+        console.error("Error inserting entry");
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -104,34 +135,48 @@ function Dashboard({ email }: emailProp) {
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={handleInsertEntry}>
-            <Form.Group className="mb-3" controlId="type">
-              <Form.Label>Type of entry</Form.Label>
-              <Form.Select>
-                <option>Application</option>
-                <option>Online Assesment</option>
-                <option>Interview</option>
-              </Form.Select>
+            <Form.Group className="mb-3" controlId="entryType">
+              <Form.Label>Type of Entry</Form.Label>
+              <Form.Control
+                as="select"
+                value={entryType}
+                onChange={(e) => handleTypeChange(e.target.value)}
+              >
+                <option value="Application">Application</option>
+                <option value="Online Assessment">Online Assesment</option>
+                <option value="Interview">Interview</option>
+              </Form.Control>
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="company">
               <Form.Label>Company</Form.Label>
-              <Form.Control placeholder="Company Name" />
+              <Form.Control
+                placeholder="Company Name"
+                onChange={(e) => setCompany(e.target.value)}
+              />
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="date">
               <Form.Label>Date</Form.Label>
-              <Form.Control type="date" />
+              <Form.Control
+                type="date"
+                onChange={(e) => handleDateChange(e.target.value)}
+              />
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="time">
               <Form.Label>Time</Form.Label>
-              <Form.Control type="time" />
+              <Form.Control
+                type="time"
+                onChange={(e) => setTime(e.target.value)}
+              />
             </Form.Group>
 
             <Button
               variant="primary"
               type="submit"
               className="accent-color text-black"
+              // onClick={handleInsertEntry}
             >
               Submit
             </Button>
