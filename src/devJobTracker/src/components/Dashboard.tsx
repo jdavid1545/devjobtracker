@@ -55,6 +55,19 @@ function Dashboard({ email }: emailProp) {
     }
   };
 
+  useEffect(() => {
+    async function getEntries() {
+      try {
+        const response = await fetch(`api/entry/getEntries?email=${email}`, {
+          method: "GET",
+        });
+        // TODO, dislay entries
+      }
+
+
+    }
+  }, [email]);
+
   return (
     <div className="app">
       <div className="container-fluid">

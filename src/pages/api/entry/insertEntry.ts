@@ -1,33 +1,57 @@
 import type { APIRoute } from "astro";
 import { app } from "../../../firebase/server";
 import { getFirestore } from "firebase-admin/firestore";
+import { DisplayEntry, RequestEntry } from "../../../src/util/types";
 
-export type POST: APIRoute = async ({ request }) => {
-    try {
-        const requestData = await request.json();
+export const POST: APIRoute = async ({ request }) => {
+  try {
+    const requestData = await request.json();
 
-        const email: string = requestData.email;
-        const entryType: string = requestData.entryType;
-        const company: string = requestData.company;
-        const timestamp: Date = requestData.timestamp;
+    const email = requestData.email;
+    const entryType = requestData.entryType;
+    const company = requestData.company;
+    const timestamp = requestData.timestamp;
 
-        const db = getFirestore(app);
+    const db = getFirestore(app);
 
-        const entryRef = await db.collection("users").doc(email).collection("entries");
+    const entryRef = await db
+      .collection("users")
+      .doc(email)
+      .collection("entries");
 
-        const entryData: DisplayEntry {
-            type: entryType,
-            company: company,
-            timestamp: timestamp,
-        };
+    const entryData: DisplayEntry = {
+      type: requestData.entryType as string,
+      company: requestData.company as string,
+      timestamp: requestData.timestamp as Date,
+    };
 
-        // add entry to the database with a firebase generated doc id
-        entryRef.add(entryData);
+    // add entry to the database with a firebase generated doc id
+    const docRef = await entryRef.add(entryData);
 
-    } catch (error) {
-        console.log(error);
-        return new Reponse("Something went wrong." , {
-            status: 500,
-        })
-    }
-}
+    // Retrieve the ID of the newly added document
+    const entryID = docRef.id;
+    console.log(`Added Entry ID: ${entryID}`);
+
+    // Now retun a list of all the application entries
+    const docs = (await entryRef.get()).docs;
+
+    const displayEntries: DisplayEntry[] = [];
+
+    docs.forEach((doc) => {
+      const entry: DisplayEntry = doc.data();
+      displayEntries.push(entry);
+    });
+
+    return new Response(JSON.stringify(displayEntries), {
+      status: 200,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  } catch (error) {
+    console.log(error);
+    return new Reponse("Something went wrong.", {
+      status: 500,
+    });
+  }
+};
