@@ -64,7 +64,7 @@ function Dashboard({ email }: emailProp) {
         const response = await fetch(`api/entry/getEntries?email=${email}`, {
           method: "GET",
         });
-        // TODO: dislay entries
+        // TODO: get entries from GET endpoint when user signs in
         const displayData: DisplayEntry[] = await response.json();
         setPreviousEntries(displayData);
       } catch (error) {
