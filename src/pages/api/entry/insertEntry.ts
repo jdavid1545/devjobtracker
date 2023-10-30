@@ -1,7 +1,7 @@
 import type { APIRoute } from "astro";
 import { app } from "../../../firebase/server";
 import { getFirestore } from "firebase-admin/firestore";
-import { DisplayEntry, RequestEntry } from "../../../util/types";
+import type { DisplayEntry, RequestEntry } from "../../../util/types";
 
 export const POST: APIRoute = async ({ request }) => {
   try {
@@ -11,6 +11,12 @@ export const POST: APIRoute = async ({ request }) => {
     const entryType = requestData.entryType;
     const company = requestData.company;
     const timestamp = requestData.timestamp;
+    console.log(`Email in insertEntry is ${email}`);
+    console.log(`EntryType in insertEntry is ${entryType}`);
+    console.log(`Company in insertEntry is ${company}`);
+    console.log(`Timestamp in insertEntry is ${timestamp}`);
+
+    console.log(`RequestData in insertEntry is ${JSON.stringify(requestData)}`);
 
     const db = getFirestore(app);
 
@@ -38,7 +44,7 @@ export const POST: APIRoute = async ({ request }) => {
     const displayEntries: DisplayEntry[] = [];
 
     docs.forEach((doc) => {
-      const entry: DisplayEntry = doc.data();
+      const entry: DisplayEntry = doc.data() as DisplayEntry;
       displayEntries.push(entry);
     });
 
@@ -48,9 +54,15 @@ export const POST: APIRoute = async ({ request }) => {
         "Content-Type": "application/json",
       },
     });
+    // return new Response("Request successful!!!", {
+    //   status: 200,
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    // });
   } catch (error) {
     console.log(error);
-    return new Reponse("Something went wrong.", {
+    return new Response("Something went wrong.", {
       status: 500,
     });
   }

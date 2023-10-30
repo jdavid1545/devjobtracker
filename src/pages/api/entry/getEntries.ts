@@ -1,7 +1,7 @@
 import type { APIRoute } from "astro";
 import { app } from "../../../firebase/server";
 import { getFirestore } from "firebase-admin/firestore";
-import { DisplayEntry } from "../../../util/types";
+import type { DisplayEntry } from "../../../util/types";
 
 export const GET: APIRoute = async ({ request }) => {
   try {

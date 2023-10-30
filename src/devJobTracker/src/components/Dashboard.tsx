@@ -1,4 +1,9 @@
-import { type SetStateAction, useEffect, useState } from "react";
+import {
+  type SetStateAction,
+  useEffect,
+  useState,
+  type FormEvent,
+} from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Table from "./Table.tsx";
@@ -11,11 +16,19 @@ import type {
 
 function Dashboard({ email }: emailProp) {
   const [showInsert, setShowInsert] = useState(false);
-  const [entryType, setEntryType] = useState("");
+  const [entryType, setEntryType] = useState("Application");
   const [company, setCompany] = useState("");
   const [date, setDate] = useState<string>("");
-  const [time, setTime] = useState(new Date().toLocaleTimeString());
-  const [previousEntries, setPreviousEntries] = useState<DisplayEntry[]>([]);
+  const [time, setTime] = useState(new Date().toDateString());
+
+  let entryToBeDeleted = null;
+  const [entries, setEntries] = useState<Array<DisplayEntry>>([]);
+  const [showDelete, setShowDelete] = useState(false);
+  const handleCloseDelete = () => setShowDelete(false);
+  const handleShowDelete = (entry: DisplayEntry) => {
+    entryToBeDeleted = entry;
+    setShowDelete(true);
+  };
 
   const handleCloseInsert = () => setShowInsert(false);
   const handlesetShowInsert = () => {
@@ -24,39 +37,58 @@ function Dashboard({ email }: emailProp) {
 
   const handleTypeChange = (value: string) => {
     setEntryType(value);
-    console.log(`Selected type: ${value}`);
+    console.log(`Selected type: ${entryType}`);
   };
-  const handleCompanyChange = (value: string) => setCompany(value);
-  const handleDateChange = (value: string) => {
-    setDate(value.toString());
-    console.log(`Selected date: ${value}`);
-  };
-  // const handleTimeChange = (value: string) => setTime(value);
 
-  const handleInsertEntry = async () => {
-    // e.preventDefault();
+  const handleCompanyChange = (value: string) => {
+    setCompany(value);
+    console.log(`Selected company: ${company}`);
+  };
+
+  const handleDateChange = (value: string) => {
+    setDate(value);
+    console.log(`Selected date: ${date}`);
+  };
+
+  const handleTimeChange = (value: string) => {
+    setTime(value);
+    console.log(`Selected time: ${time}`);
+  };
+
+  // const handleTimeChange = (value: string) => setTime(value);
+  const handleDeleteEntry = () => {};
+
+  const handleInsertEntry = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     try {
+      // console.log(`Date is ${date}`);
       const requestBody: RequestEntry = {
         email: email,
         entryType: entryType,
         company: company,
-        timestamp: new Date(date),
+        timestamp: new Date(date + `T` + time + `Z`),
       };
 
-      const response = await fetch("api/entry/insertEntry", {
+      console.log(`RequestBody in Dashboard is ${JSON.stringify(requestBody)}`);
+
+      const response = await fetch(`api/entry/insertEntry`, {
         method: "POST",
         body: JSON.stringify(requestBody),
       });
 
+      console.log(`Response in Dashbaord is ${JSON.stringify(response)}`);
+
       if (response.status == 200) {
         // TODO: update entrylist
+        const reponseData: DisplayEntry[] = await response.json();
+        setEntries(reponseData);
       } else {
         console.error("Error inserting entry");
       }
     } catch (error) {
       console.error(error);
     }
-  };
+  }; // end of handleInsertEntry
 
   useEffect(() => {
     async function getEntries() {
@@ -66,11 +98,12 @@ function Dashboard({ email }: emailProp) {
         });
         // TODO: get entries from GET endpoint when user signs in
         const displayData: DisplayEntry[] = await response.json();
-        setPreviousEntries(displayData);
+        setEntries(displayData);
       } catch (error) {
         console.error(error);
       }
     }
+    getEntries(); // get entries when user signs in
   }, [email]);
 
   return (
@@ -138,7 +171,61 @@ function Dashboard({ email }: emailProp) {
           </div>
           <div className="col flex-grow-1 no-overflow background-color">
             {/* put site content here */}
-            <Table email={email} />
+            <table className="table table-dark main-content">
+              <thead>
+                <tr>
+                  <th scope="col">Type</th>
+                  <th scope="col">Company</th>
+                  <th scope="col">Date</th>
+                  <th scope="col">Time</th>
+                  <th scope="col">Clear</th>
+                </tr>
+              </thead>
+              <tbody>
+                {entries?.map((entry: DisplayEntry, index) => {
+                  return (
+                    <tr key={index}>
+                      {/* <th scope="row">1</th> */}
+                      <td>{entry.type}</td>
+                      <td>{entry.company}</td>
+                      <td>{entry.timestamp.toLocaleDateString()}</td>
+                      <td>{entry.timestamp.toLocaleTimeString()}</td>
+                      <td>
+                        <button
+                          type="button"
+                          onClick={() => handleShowDelete(entry)}
+                          className="btn btn-danger btn-sm"
+                          data-toggle="modal"
+                          data-target="#exampleModal"
+                        >
+                          <i className="fa-solid fa-trash"></i>
+                        </button>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+              <Modal
+                show={showDelete}
+                onHide={handleCloseDelete}
+                className="delete-modal"
+              >
+                <Modal.Header closeButton>
+                  <Modal.Title>Delete Entry</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                  Are you sure you want to delete this entry?
+                </Modal.Body>
+                <Modal.Footer>
+                  <Button variant="secondary" onClick={handleCloseDelete}>
+                    Close
+                  </Button>
+                  <Button variant="danger" onClick={handleDeleteEntry}>
+                    Delete
+                  </Button>
+                </Modal.Footer>
+              </Modal>
+            </table>
           </div>
         </div>
       </div>
@@ -152,7 +239,7 @@ function Dashboard({ email }: emailProp) {
           <Modal.Title>Insert Entry</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form onSubmit={handleInsertEntry}>
+          <Form onSubmit={(e) => handleInsertEntry(e)}>
             <Form.Group className="mb-3" controlId="entryType">
               <Form.Label>Type of Entry</Form.Label>
               <Form.Control
@@ -170,6 +257,7 @@ function Dashboard({ email }: emailProp) {
               <Form.Label>Company</Form.Label>
               <Form.Control
                 placeholder="Company Name"
+                value={company}
                 onChange={(e) => setCompany(e.target.value)}
               />
             </Form.Group>
@@ -178,6 +266,7 @@ function Dashboard({ email }: emailProp) {
               <Form.Label>Date</Form.Label>
               <Form.Control
                 type="date"
+                value={date}
                 onChange={(e) => handleDateChange(e.target.value)}
               />
             </Form.Group>
@@ -186,7 +275,8 @@ function Dashboard({ email }: emailProp) {
               <Form.Label>Time</Form.Label>
               <Form.Control
                 type="time"
-                onChange={(e) => setTime(e.target.value)}
+                value={time}
+                onChange={(e) => handleTimeChange(e.target.value)}
               />
             </Form.Group>
 
