@@ -59,7 +59,7 @@ function Dashboard({ email }: emailProp) {
   const handleDeleteEntry = () => {};
 
   const handleInsertEntry = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+    e.preventDefault(); // Here to avoid network refresh
     try {
       // console.log(`Date is ${date}`);
       const requestBody: RequestEntry = {
@@ -188,6 +188,7 @@ function Dashboard({ email }: emailProp) {
                       {/* <th scope="row">1</th> */}
                       <td>{entry.type}</td>
                       <td>{entry.company}</td>
+                      {/*<td>{entry.timestamp}</td>*/}
                       <td>{entry.timestamp.toLocaleDateString()}</td>
                       <td>{entry.timestamp.toLocaleTimeString()}</td>
                       <td>

@@ -1,6 +1,7 @@
 import type { APIRoute } from "astro";
 import { app } from "../../../firebase/server";
 import { getFirestore } from "firebase-admin/firestore";
+import firebase from "firebase/app";
 import type { DisplayEntry, RequestEntry } from "../../../util/types";
 
 export const POST: APIRoute = async ({ request }) => {
@@ -25,10 +26,16 @@ export const POST: APIRoute = async ({ request }) => {
       .doc(email)
       .collection("entries");
 
-    const entryData: DisplayEntry = {
+    // const entryData: DisplayEntry = {
+    //   type: requestData.entryType as string,
+    //   company: requestData.company as string,
+    //   timestamp: requestData.timestamp as string,
+    // };
+
+    const entryData = {
       type: requestData.entryType as string,
       company: requestData.company as string,
-      timestamp: requestData.timestamp as Date,
+      timestamp: firebase.firestore.Timestamp.fromDate(requestData.timestamp),
     };
 
     // add entry to the database with a firebase generated doc id
@@ -41,11 +48,17 @@ export const POST: APIRoute = async ({ request }) => {
     // Now retun a list of all the application entries
     const docs = (await entryRef.get()).docs;
 
-    const displayEntries: DisplayEntry[] = [];
+    // const displayEntries: DisplayEntry[] = [];
 
-    docs.forEach((doc) => {
-      const entry: DisplayEntry = doc.data() as DisplayEntry;
-      displayEntries.push(entry);
+    const displayEntries: DisplayEntry[] = docs.flatMap((doc) => {
+      const data = doc.data();
+      return [
+        {
+          type: data.type,
+          company: data.company,
+          timestamp: data.timestamp.toDate(),
+        },
+      ];
     });
 
     return new Response(JSON.stringify(displayEntries), {

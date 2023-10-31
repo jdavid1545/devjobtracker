@@ -1,15 +1,15 @@
 export type DisplayEntry = {
   // entryID: string;
-  type: String;
-  company: String;
+  type: string;
+  company: string;
   timestamp: Date;
 };
 
 export type RequestEntry = {
   // entryID: string;
-  email: String;
-  entryType: String;
-  company: String;
+  email: string;
+  entryType: string;
+  company: string;
   timestamp: Date;
 };
 
