@@ -2,11 +2,11 @@ import type { APIRoute } from "astro";
 import { app } from "../../../firebase/server";
 import { getFirestore } from "firebase-admin/firestore";
 import firebase from "firebase/app";
-import type { DisplayEntry, RequestEntry } from "../../../util/types";
+import type { Entry, FirebaseEntry, RequestEntry } from "../../../util/types";
 
 export const POST: APIRoute = async ({ request }) => {
   try {
-    const requestData = await request.json();
+    const requestData = (await request.json()) as RequestEntry;
 
     const email = requestData.email;
     const entryType = requestData.entryType;
@@ -26,16 +26,10 @@ export const POST: APIRoute = async ({ request }) => {
       .doc(email)
       .collection("entries");
 
-    // const entryData: DisplayEntry = {
-    //   type: requestData.entryType as string,
-    //   company: requestData.company as string,
-    //   timestamp: requestData.timestamp as string,
-    // };
-
-    const entryData = {
-      type: requestData.entryType as string,
-      company: requestData.company as string,
-      timestamp: firebase.firestore.Timestamp.fromDate(requestData.timestamp),
+    const entryData: FirebaseEntry = {
+      entryType: requestData.entryType,
+      company: requestData.company,
+      timestamp: requestData.timestamp,
     };
 
     // add entry to the database with a firebase generated doc id
@@ -45,23 +39,21 @@ export const POST: APIRoute = async ({ request }) => {
     const entryID = docRef.id;
     console.log(`Added Entry ID: ${entryID}`);
 
-    // Now retun a list of all the application entries
+    // Now return a list of all the application entries
     const docs = (await entryRef.get()).docs;
 
-    // const displayEntries: DisplayEntry[] = [];
-
-    const displayEntries: DisplayEntry[] = docs.flatMap((doc) => {
-      const data = doc.data();
+    const entries: Entry[] = docs.flatMap((doc) => {
+      const data = doc.data() as FirebaseEntry;
       return [
         {
-          type: data.type,
+          entryType: data.entryType,
           company: data.company,
-          timestamp: data.timestamp.toDate(),
+          timestamp: new Date(data.timestamp),
         },
       ];
     });
 
-    return new Response(JSON.stringify(displayEntries), {
+    return new Response(JSON.stringify(entries), {
       status: 200,
       headers: {
         "Content-Type": "application/json",

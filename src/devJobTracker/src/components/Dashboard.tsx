@@ -9,23 +9,24 @@ import Modal from "react-bootstrap/Modal";
 import Table from "./Table.tsx";
 import Form from "react-bootstrap/Form";
 import type {
-  DisplayEntry,
+  Entry,
   RequestEntry,
   emailProp,
+  EntryType,
 } from "../../../util/types.ts";
 
 function Dashboard({ email }: emailProp) {
   const [showInsert, setShowInsert] = useState(false);
-  const [entryType, setEntryType] = useState("Application");
-  const [company, setCompany] = useState("");
+  const [entryType, setEntryType] = useState<EntryType>("Application");
+  const [company, setCompany] = useState<string>("");
   const [date, setDate] = useState<string>("");
-  const [time, setTime] = useState(new Date().toDateString());
+  const [time, setTime] = useState<string>("");
 
   let entryToBeDeleted = null;
-  const [entries, setEntries] = useState<Array<DisplayEntry>>([]);
+  const [entries, setEntries] = useState<Array<Entry>>([]);
   const [showDelete, setShowDelete] = useState(false);
   const handleCloseDelete = () => setShowDelete(false);
-  const handleShowDelete = (entry: DisplayEntry) => {
+  const handleShowDelete = (entry: Entry) => {
     entryToBeDeleted = entry;
     setShowDelete(true);
   };
@@ -35,7 +36,7 @@ function Dashboard({ email }: emailProp) {
     setShowInsert(true);
   };
 
-  const handleTypeChange = (value: string) => {
+  const handleTypeChange = (value: EntryType) => {
     setEntryType(value);
     console.log(`Selected type: ${entryType}`);
   };
@@ -58,6 +59,10 @@ function Dashboard({ email }: emailProp) {
   // const handleTimeChange = (value: string) => setTime(value);
   const handleDeleteEntry = () => {};
 
+  const toTimestampFormat = (date: string, time: string): string => {
+    return date + `T` + time + `Z`;
+  };
+
   const handleInsertEntry = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault(); // Here to avoid network refresh
     try {
@@ -66,7 +71,7 @@ function Dashboard({ email }: emailProp) {
         email: email,
         entryType: entryType,
         company: company,
-        timestamp: new Date(date + `T` + time + `Z`),
+        timestamp: toTimestampFormat(date, time),
       };
 
       console.log(`RequestBody in Dashboard is ${JSON.stringify(requestBody)}`);
@@ -76,12 +81,23 @@ function Dashboard({ email }: emailProp) {
         body: JSON.stringify(requestBody),
       });
 
-      console.log(`Response in Dashbaord is ${JSON.stringify(response)}`);
-
       if (response.status == 200) {
         // TODO: update entrylist
-        const reponseData: DisplayEntry[] = await response.json();
-        setEntries(reponseData);
+        const responseData = (await response.json()) as Entry[];
+        console.log(`Response in Dashboard is ${JSON.stringify(responseData)}`);
+        const displayData: Entry[] = responseData.flatMap((entry: Entry) => {
+          return [
+            {
+              entryType: entry.entryType,
+              company: entry.company,
+              timestamp: new Date(entry.timestamp),
+            },
+          ];
+        });
+
+        if (responseData.length > 0) {
+          setEntries(displayData);
+        }
       } else {
         console.error("Error inserting entry");
       }
@@ -97,8 +113,10 @@ function Dashboard({ email }: emailProp) {
           method: "GET",
         });
         // TODO: get entries from GET endpoint when user signs in
-        const displayData: DisplayEntry[] = await response.json();
-        setEntries(displayData);
+        const displayData: Entry[] = await response.json();
+        if (displayData.length > 0) {
+          setEntries(displayData);
+        }
       } catch (error) {
         console.error(error);
       }
@@ -174,7 +192,7 @@ function Dashboard({ email }: emailProp) {
             <table className="table table-dark main-content">
               <thead>
                 <tr>
-                  <th scope="col">Type</th>
+                  <th scope="col">Entry Type</th>
                   <th scope="col">Company</th>
                   <th scope="col">Date</th>
                   <th scope="col">Time</th>
@@ -182,11 +200,11 @@ function Dashboard({ email }: emailProp) {
                 </tr>
               </thead>
               <tbody>
-                {entries?.map((entry: DisplayEntry, index) => {
+                {entries?.map((entry: Entry, index) => {
                   return (
                     <tr key={index}>
                       {/* <th scope="row">1</th> */}
-                      <td>{entry.type}</td>
+                      <td>{entry.entryType}</td>
                       <td>{entry.company}</td>
                       {/*<td>{entry.timestamp}</td>*/}
                       <td>{entry.timestamp.toLocaleDateString()}</td>
@@ -246,10 +264,10 @@ function Dashboard({ email }: emailProp) {
               <Form.Control
                 as="select"
                 value={entryType}
-                onChange={(e) => handleTypeChange(e.target.value)}
+                onChange={(e) => handleTypeChange(e.target.value as EntryType)}
               >
                 <option value="Application">Application</option>
-                <option value="Online Assessment">Online Assesment</option>
+                <option value="Online Assessment">Online Assessment</option>
                 <option value="Interview">Interview</option>
               </Form.Control>
             </Form.Group>

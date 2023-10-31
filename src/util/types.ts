@@ -1,21 +1,26 @@
-export type DisplayEntry = {
+export type Entry = {
   // entryID: string;
-  type: string;
+  entryType: EntryType;
   company: string;
   timestamp: Date;
 };
 
-export type RequestEntry = {
+export type FirebaseEntry = {
   // entryID: string;
-  email: string;
-  entryType: string;
+  entryType: EntryType;
   company: string;
-  timestamp: Date;
+  timestamp: string;
+};
+
+export type RequestEntry = FirebaseEntry & {
+  email: string;
 };
 
 export type emailProp = {
   email: string;
 };
+
+export type EntryType = "Application" | "Online Assessment" | "Interview";
 
 // Prototypes
 // export type EntryType = "Application" | "Online Assessment" | "Interview";

@@ -3,19 +3,19 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import type {
   emailProp,
-  DisplayEntry,
+  Entry,
   RequestEntry,
 } from "../../../util/types.ts";
 
 function Table(
   { email }: emailProp,
-  { type, company, timestamp }: DisplayEntry
+  { type, company, timestamp }: Entry
 ) {
   let entryToBeDeleted = null;
-  const [entries, setEntries] = useState<Array<DisplayEntry>>([]);
+  const [entries, setEntries] = useState<Array<Entry>>([]);
   const [showDelete, setShowDelete] = useState(false);
   const handleCloseDelete = () => setShowDelete(false);
-  const handleShowDelete = (entry: DisplayEntry) => {
+  const handleShowDelete = (entry: Entry) => {
     entryToBeDeleted = entry;
     setShowDelete(true);
   };
@@ -40,7 +40,7 @@ function Table(
 
       if (response.status == 200) {
         // TODO: update entrylist
-        const reponseData: DisplayEntry[] = await response.json();
+        const reponseData: Entry[] = await response.json();
         setEntries(reponseData);
       } else {
         console.error("Error inserting entry");
@@ -57,7 +57,7 @@ function Table(
           method: "GET",
         });
         // TODO: get entries from GET endpoint when user signs in
-        const displayData: DisplayEntry[] = await response.json();
+        const displayData: Entry[] = await response.json();
         setEntries(displayData);
       } catch (error) {
         console.error(error);
@@ -90,7 +90,7 @@ function Table(
         </tr>
       </thead>
       <tbody>
-        {entries?.map((entry: DisplayEntry, index) => {
+        {entries?.map((entry: Entry, index) => {
           return (
             <tr key={index}>
               {/* <th scope="row">1</th> */}

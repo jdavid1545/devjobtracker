@@ -1,7 +1,7 @@
 import type { APIRoute } from "astro";
 import { app } from "../../../firebase/server";
 import { getFirestore } from "firebase-admin/firestore";
-import type { DisplayEntry } from "../../../util/types";
+import type { Entry, FirebaseEntry } from "../../../util/types";
 
 export const GET: APIRoute = async ({ request }) => {
   try {
@@ -12,20 +12,26 @@ export const GET: APIRoute = async ({ request }) => {
 
     const db = getFirestore(app);
 
-    const entryRefs = await db
+    const entryRef = await db
       .collection("users")
       .doc(email)
       .collection("entries");
 
-    const docs = (await entryRefs.get()).docs;
-    const displayEntries: DisplayEntry[] = [];
+    // Now return a list of all the application entries
+    const docs = (await entryRef.get()).docs;
 
-    docs.forEach((doc) => {
-      const entry: DisplayEntry = doc.data() as DisplayEntry;
-      displayEntries.push(entry);
+    const entries: Entry[] = docs.flatMap((doc) => {
+      const data = doc.data() as FirebaseEntry;
+      return [
+        {
+          entryType: data.entryType,
+          company: data.company,
+          timestamp: new Date(data.timestamp),
+        },
+      ];
     });
 
-    return new Response(JSON.stringify(displayEntries), {
+    return new Response(JSON.stringify(entries), {
       status: 200,
       headers: {
         "Content-Type": "application/json",
