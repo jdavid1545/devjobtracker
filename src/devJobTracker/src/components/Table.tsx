@@ -1,4 +1,4 @@
-import { type SetStateAction, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import type { emailProp, Entry, RequestEntry } from "../../../util/types.ts";
