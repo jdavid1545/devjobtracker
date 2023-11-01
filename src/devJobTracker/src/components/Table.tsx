@@ -1,16 +1,9 @@
 import { type SetStateAction, useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-import type {
-  emailProp,
-  Entry,
-  RequestEntry,
-} from "../../../util/types.ts";
+import type { emailProp, Entry, RequestEntry } from "../../../util/types.ts";
 
-function Table(
-  { email }: emailProp,
-  { type, company, timestamp }: Entry
-) {
+function Table({ email }: emailProp, { type, company, timestamp }: Entry) {
   let entryToBeDeleted = null;
   const [entries, setEntries] = useState<Array<Entry>>([]);
   const [showDelete, setShowDelete] = useState(false);
