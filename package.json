@@ -7,7 +7,11 @@
     "start": "astro dev",
     "build": "astro check && astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "format": "prettier src --check",
+    "format-write": "prettier . --write",
+    "typecheck": "tsc --project tsconfig.json --noEmit",
+    "lint": "cross-env DEBUG=eslint:cli-engine eslint src --max-warnings 0"
   },
   "dependencies": {
     "@astrojs/check": "^0.2.1",
