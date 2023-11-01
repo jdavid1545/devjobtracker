@@ -14,6 +14,7 @@
 //   };
 //   const handleDeleteEntry = () => {};
 
+
 //   const handleInsertEntry = async () => {
 //     // e.preventDefault();
 //     try {
@@ -24,8 +25,8 @@
 //         timestamp: timestamp,
 //       };
 
-//       console.log(`RequestBody is ${requestBody}`);
 
+//       console.log(`RequestBody is ${requestBody}`);
 //       const response = await fetch("api/entry/insertEntry", {
 //         method: "POST",
 //         body: JSON.stringify(requestBody),

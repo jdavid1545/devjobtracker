@@ -6,19 +6,8 @@ import node from "@astrojs/node";
 
 // https://astro.build/config
 export default defineConfig({
-  output: "hybrid",
-  server: {
-    // host: "127.0.0.1",
-    port: 3000,
-  },
+  output: "server",
+
+  adapter: netlify(),
   integrations: [react()],
-  vite: {
-    optimizeDeps: {
-      exclude: ["crypto"],
-    },
-  },
-  // adapter: netlify(),
-  adapter: node({
-    mode: "standalone",
-  }),
 });
