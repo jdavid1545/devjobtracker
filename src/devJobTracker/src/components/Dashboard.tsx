@@ -280,6 +280,7 @@ function Dashboard({ email }: emailProp) {
               <Form.Label>Date</Form.Label>
               <Form.Control
                 type="date"
+                required
                 value={date}
                 onChange={(e) => handleDateChange(e.target.value)}
               />
