@@ -80,8 +80,8 @@ button {
   box-shadow: 5px 8px 10px 5px rgb(0 0 0 / 20%);
   text-align: center; /* Center the contents horizontally */
   background-color: var(--foreground-color);
-  margin-top:10px;
-  height:45vh;
+  margin-top: 10px;
+  height: 45vh;
 }
 
 .new-user-container {
@@ -99,7 +99,7 @@ button {
 }
 
 #loginForm .btn {
-  color:#201a30;
+  color: #201a30;
   border: solid 0.5px rgba(255, 255, 255, 0.5);
   background-color: var(--accent-color);
   border-radius: 20px;
@@ -108,7 +108,7 @@ button {
 }
 
 #registerForm .btn {
-  color:#201a30;
+  color: #201a30;
   border: solid 0.5px rgba(255, 255, 255, 0.5);
   background-color: var(--accent-color);
   border-radius: 20px;
@@ -174,14 +174,14 @@ select option {
 }
 
 .form-control {
-  box-sizing: border-box; 
-  margin-top:10px;
-  margin-bottom:10px;
+  box-sizing: border-box;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 .form-outline {
-  box-sizing: border-box; 
-  margin-top:10px;
-  margin-bottom:10px;
+  box-sizing: border-box;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 ::placeholder {
@@ -190,7 +190,7 @@ select option {
 
 .top-icon {
   margin: auto;
-  font-size: 50px
+  font-size: 50px;
 }
 
 .site-title {
@@ -199,7 +199,7 @@ select option {
 }
 
 .divider {
-  width:90%;
+  width: 90%;
   background-color: rgb(111, 111, 111);
   border: none;
   height: 1px;
@@ -208,7 +208,7 @@ select option {
 }
 
 .login-button {
-  margin-top:20px;
+  margin-top: 20px;
 }
 
 .sidepanel {
@@ -222,7 +222,7 @@ select option {
   background-color: var(--foreground-color);
 }
 
-.nav-link #a{
+.nav-link #a {
   color: white;
 }
 
@@ -242,7 +242,7 @@ select option {
 
 .main-content {
   margin-left: 15%;
-  max-width:85%;
+  max-width: 85%;
 }
 
 .no-overflow {
@@ -253,7 +253,7 @@ select option {
   background-color: var(--background-color);
 }
 
-.delete-modal .modal-content{
+.delete-modal .modal-content {
   background-color: var(--background-color);
 }
 
