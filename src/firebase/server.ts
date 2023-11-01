@@ -15,7 +15,7 @@ const serviceAccount = {
   client_x509_cert_url: import.meta.env.FIREBASE_CLIENT_CERT_URL,
 };
 
-if (import.meta.env.EMULATOR) {
+if (import.meta.env.EMULATOR === 'true') {
   console.log("Emulator Setting Up");
   process.env["FIREBASE_AUTH_EMULATOR_HOST"] = "localhost:9099";
   process.env["FIRESTORE_EMULATOR_HOST"] = "localhost:8080";
