@@ -2,14 +2,16 @@ export type Entry = {
   // entryID: string;
   entryType: EntryType;
   company: string;
-  timestamp: Date;
+  date: string;
+  time: string;
 };
 
 export type FirebaseEntry = {
   // entryID: string;
   entryType: EntryType;
   company: string;
-  timestamp: string;
+  date: string;
+  time: string;
 };
 
 export type RequestEntry = FirebaseEntry & {

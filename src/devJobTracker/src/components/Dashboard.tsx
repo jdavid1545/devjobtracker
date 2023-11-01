@@ -71,7 +71,9 @@ function Dashboard({ email }: emailProp) {
         email: email,
         entryType: entryType,
         company: company,
-        timestamp: toTimestampFormat(date, time),
+        date: date,
+        time: time,
+        // timestamp: toTimestampFormat(date, time),
       };
 
       console.log(`RequestBody in Dashboard is ${JSON.stringify(requestBody)}`);
@@ -82,22 +84,27 @@ function Dashboard({ email }: emailProp) {
       });
 
       if (response.status == 200) {
-        // TODO: update entrylist
+        // TODO: update entry list
         const responseData = (await response.json()) as Entry[];
         console.log(`Response in Dashboard is ${JSON.stringify(responseData)}`);
-        const displayData: Entry[] = responseData.flatMap((entry: Entry) => {
-          return [
-            {
-              entryType: entry.entryType,
-              company: entry.company,
-              timestamp: new Date(entry.timestamp),
-            },
-          ];
-        });
-
         if (responseData.length > 0) {
-          setEntries(displayData);
+          setEntries(responseData);
         }
+
+        // const displayData: Entry[] = responseData.flatMap((entry: Entry) => {
+        //   return [
+        //     {
+        //       entryType: entry.entryType,
+        //       company: entry.company,
+        //       date: entry.date,
+        //       time: entry.time
+        //     },
+        //   ];
+        // });
+        //
+        // if (responseData.length > 0) {
+        //   setEntries(displayData);
+        // }
       } else {
         console.error("Error inserting entry");
       }
@@ -206,9 +213,10 @@ function Dashboard({ email }: emailProp) {
                       {/* <th scope="row">1</th> */}
                       <td>{entry.entryType}</td>
                       <td>{entry.company}</td>
+                      <td>{entry.date}</td>
+                      <td>{entry.time}</td>
                       {/*<td>{entry.timestamp}</td>*/}
-                      <td>{entry.timestamp.toLocaleDateString()}</td>
-                      <td>{entry.timestamp.toLocaleTimeString()}</td>
+                      {/*<td>{entry.timestamp}</td>*/}
                       <td>
                         <button
                           type="button"

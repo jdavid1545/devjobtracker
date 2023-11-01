@@ -26,7 +26,8 @@ export const GET: APIRoute = async ({ request }) => {
         {
           entryType: data.entryType,
           company: data.company,
-          timestamp: new Date(data.timestamp),
+          date: data.date,
+          time: data.time,
         },
       ];
     });

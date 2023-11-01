@@ -11,11 +11,14 @@ export const POST: APIRoute = async ({ request }) => {
     const email = requestData.email;
     const entryType = requestData.entryType;
     const company = requestData.company;
-    const timestamp = requestData.timestamp;
+    const date = requestData.date;
+    const time = requestData.time;
     console.log(`Email in insertEntry is ${email}`);
     console.log(`EntryType in insertEntry is ${entryType}`);
     console.log(`Company in insertEntry is ${company}`);
-    console.log(`Timestamp in insertEntry is ${timestamp}`);
+    // console.log(`Timestamp in insertEntry is ${timestamp}`);
+    console.log(`Date in insertEntry is ${date}`);
+    console.log(`Time in insertEntry is ${time}`);
 
     console.log(`RequestData in insertEntry is ${JSON.stringify(requestData)}`);
 
@@ -29,7 +32,9 @@ export const POST: APIRoute = async ({ request }) => {
     const entryData: FirebaseEntry = {
       entryType: requestData.entryType,
       company: requestData.company,
-      timestamp: requestData.timestamp,
+      date: requestData.date,
+      time: requestData.time,
+      // timestamp: requestData.timestamp,
     };
 
     // add entry to the database with a firebase generated doc id
@@ -48,7 +53,8 @@ export const POST: APIRoute = async ({ request }) => {
         {
           entryType: data.entryType,
           company: data.company,
-          timestamp: new Date(data.timestamp),
+          date: data.date,
+          time: data.time,
         },
       ];
     });
@@ -59,12 +65,6 @@ export const POST: APIRoute = async ({ request }) => {
         "Content-Type": "application/json",
       },
     });
-    // return new Response("Request successful!!!", {
-    //   status: 200,
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    // });
   } catch (error) {
     console.log(error);
     return new Response("Something went wrong.", {
