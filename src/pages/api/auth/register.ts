@@ -15,7 +15,7 @@ export const POST: APIRoute = async ({ request, redirect }) => {
   /* Create user */
   try {
     const data = await request.json();
-    const {email, password} = data
+    const { email, password } = data;
 
     if (!email || !password) {
       return new Response("Missing form data", { status: 400 });
