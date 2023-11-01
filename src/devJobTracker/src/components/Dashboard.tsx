@@ -90,21 +90,7 @@ function Dashboard({ email }: emailProp) {
         if (responseData.length > 0) {
           setEntries(responseData);
         }
-
-        // const displayData: Entry[] = responseData.flatMap((entry: Entry) => {
-        //   return [
-        //     {
-        //       entryType: entry.entryType,
-        //       company: entry.company,
-        //       date: entry.date,
-        //       time: entry.time
-        //     },
-        //   ];
-        // });
-        //
-        // if (responseData.length > 0) {
-        //   setEntries(displayData);
-        // }
+        setShowInsert(false);
       } else {
         console.error("Error inserting entry");
       }
@@ -284,6 +270,7 @@ function Dashboard({ email }: emailProp) {
               <Form.Label>Company</Form.Label>
               <Form.Control
                 placeholder="Company Name"
+                required
                 value={company}
                 onChange={(e) => setCompany(e.target.value)}
               />
