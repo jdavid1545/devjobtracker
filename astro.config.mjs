@@ -6,7 +6,7 @@ import node from "@astrojs/node";
 
 // https://astro.build/config
 export default defineConfig({
-  output: "hybrid",
+  output: "server",
   server: {
     // host: "127.0.0.1",
     port: 3000,
@@ -18,7 +18,5 @@ export default defineConfig({
     },
   },
   // adapter: netlify(),
-  adapter: node({
-    mode: "standalone",
-  }),
+  adapter: netlify(),
 });
