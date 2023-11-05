@@ -127,7 +127,7 @@ function Dashboard({ email }: emailProp) {
                 <span className="fs-4 d-none d-sm-inline">DevJobTracker</span>
               </a>
               <ul className="nav nav-pills flex-column mt-4">
-                <li className="nav-item py-2 py-sm-0">
+                {/* <li className="nav-item py-2 py-sm-0">
                   <a
                     href="#"
                     className="nav-link text-white fa-grid-2"
@@ -150,7 +150,7 @@ function Dashboard({ email }: emailProp) {
                   <a href="#" className="nav-link text-white fa-grid-2">
                     Applications
                   </a>
-                </li>
+                </li> */}
                 <hr></hr>
                 <button
                   type="button"
