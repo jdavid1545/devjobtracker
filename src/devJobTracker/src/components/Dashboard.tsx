@@ -189,7 +189,7 @@ function Dashboard({ email }: emailProp) {
                   <th scope="col">Company</th>
                   <th scope="col">Date</th>
                   <th scope="col">Time</th>
-                  <th scope="col">Clear</th>
+                  {/* <th scope="col">Clear</th> */}
                 </tr>
               </thead>
               <tbody>
@@ -203,7 +203,7 @@ function Dashboard({ email }: emailProp) {
                       <td>{entry.time}</td>
                       {/*<td>{entry.timestamp}</td>*/}
                       {/*<td>{entry.timestamp}</td>*/}
-                      <td>
+                      {/* <td>
                         <button
                           type="button"
                           onClick={() => handleShowDelete(entry)}
@@ -213,7 +213,7 @@ function Dashboard({ email }: emailProp) {
                         >
                           <i className="fa-solid fa-trash"></i>
                         </button>
-                      </td>
+                      </td> */}
                     </tr>
                   );
                 })}
