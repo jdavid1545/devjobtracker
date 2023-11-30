@@ -1,5 +1,5 @@
 export type Entry = {
-  // entryID: string;
+  entryID: string;
   entryType: EntryType;
   company: string;
   date: string;
@@ -7,11 +7,12 @@ export type Entry = {
 };
 
 export type FirebaseEntry = {
-  // entryID: string;
+  entryID: string;
   entryType: EntryType;
   company: string;
   date: string;
   time: string;
+  // timestamp: Date;
 };
 
 export type RequestEntry = FirebaseEntry & {
@@ -25,6 +26,4 @@ export type emailProp = {
 export type EntryType = "Application" | "Online Assessment" | "Interview";
 
 // Prototypes
-// export type EntryType = "Application" | "Online Assessment" | "Interview";
-
 // export type Status = "Applied" | "Screen" | "Interview" | "Offer" | "Rejected" | "Accepted";

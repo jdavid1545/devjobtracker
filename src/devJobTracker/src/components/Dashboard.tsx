@@ -57,7 +57,6 @@ function Dashboard({ email }: emailProp) {
   };
 
   // const handleTimeChange = (value: string) => setTime(value);
-  const handleDeleteEntry = () => {};
 
   const toTimestampFormat = (date: string, time: string): string => {
     return date + `T` + time + `Z`;
@@ -69,6 +68,7 @@ function Dashboard({ email }: emailProp) {
       // console.log(`Date is ${date}`);
       const requestBody: RequestEntry = {
         email: email,
+        entryID: "",
         entryType: entryType,
         company: company,
         date: date,
@@ -99,23 +99,38 @@ function Dashboard({ email }: emailProp) {
     }
   }; // end of handleInsertEntry
 
-  useEffect(() => {
-    async function getEntries() {
-      try {
-        const response = await fetch(`api/entry/getEntries?email=${email}`, {
-          method: "GET",
-        });
-        // TODO: get entries from GET endpoint when user signs in
-        const displayData: Entry[] = await response.json();
-        if (displayData.length > 0) {
-          setEntries(displayData);
-        }
-      } catch (error) {
-        console.error(error);
+  async function getEntries() {
+    try {
+      const response = await fetch(`api/entry/getEntries?email=${email}`, {
+        method: "GET",
+      });
+      // TODO: get entries from GET endpoint when user signs in
+      const displayData: Entry[] = await response.json();
+      if (displayData.length > 0) {
+        setEntries(displayData);
       }
+    } catch (error) {
+      console.error(error);
     }
+  }
+
+  useEffect(() => {
     getEntries(); // get entries when user signs in
   }, [email]);
+
+  const handleDeleteEntry = async (entryId: string) => {
+    try {
+      const response = await fetch(
+        `api/entry/deleteEntry?email=${email}&entryId=${entryId}`,
+        {
+          method: "DELETE",
+        },
+      );
+      await getEntries();
+    } catch (error) {
+      console.error(error);
+    }
+  }; // end of handleDeleteEntry
 
   return (
     <div className="app">
@@ -203,17 +218,17 @@ function Dashboard({ email }: emailProp) {
                       <td>{entry.time}</td>
                       {/*<td>{entry.timestamp}</td>*/}
                       {/*<td>{entry.timestamp}</td>*/}
-                      {/* <td>
+                      <td>
                         <button
                           type="button"
-                          onClick={() => handleShowDelete(entry)}
+                          onClick={() => handleDeleteEntry(entry.entryID)}
                           className="btn btn-danger btn-sm"
                           data-toggle="modal"
                           data-target="#exampleModal"
                         >
                           <i className="fa-solid fa-trash"></i>
                         </button>
-                      </td> */}
+                      </td>
                     </tr>
                   );
                 })}
@@ -233,9 +248,9 @@ function Dashboard({ email }: emailProp) {
                   <Button variant="secondary" onClick={handleCloseDelete}>
                     Close
                   </Button>
-                  <Button variant="danger" onClick={handleDeleteEntry}>
-                    Delete
-                  </Button>
+                  {/*<Button variant="danger" onClick={handleDeleteEntry}>*/}
+                  {/*  Delete*/}
+                  {/*</Button>*/}
                 </Modal.Footer>
               </Modal>
             </table>
