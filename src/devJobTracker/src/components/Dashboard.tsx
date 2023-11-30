@@ -106,7 +106,7 @@ function Dashboard({ email }: emailProp) {
       });
       // TODO: get entries from GET endpoint when user signs in
       const displayData: Entry[] = await response.json();
-      if (displayData.length > 0) {
+      if (displayData.length >= 0) {
         setEntries(displayData);
       }
     } catch (error) {
