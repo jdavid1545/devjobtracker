@@ -22,7 +22,7 @@ export const DELETE: APIRoute = async ({ request }) => {
       .doc(entryId)
       .delete();
 
-    return new Response("Entry deleted successfully.", {
+    return new Response("Entry successfully deleted.", {
       status: 200,
     });
   } catch (error) {
