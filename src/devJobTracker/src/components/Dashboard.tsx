@@ -16,13 +16,11 @@ import type {
 } from "../../../util/types.ts";
 
 function Dashboard({ email }: emailProp) {
-  const [showInsertForm, setShowInsertForm] = useState(false);
-  const [showEditForm, setShowEditForm] = useState(false);
+  const [showInsert, setShowInsert] = useState(false);
   const [entryType, setEntryType] = useState<EntryType>("Application");
   const [company, setCompany] = useState<string>("");
   const [date, setDate] = useState<string>("");
   const [time, setTime] = useState<string>("");
-  const [currentId, setCurrentId] = useState<string>("");
 
   let entryToBeDeleted = null;
   const [entries, setEntries] = useState<Array<Entry>>([]);
@@ -33,9 +31,9 @@ function Dashboard({ email }: emailProp) {
     setShowDelete(true);
   };
 
-  const handleCloseInsert = () => setShowInsertForm(false);
-  const handleSetShowInsert = () => {
-    setShowInsertForm(true);
+  const handleCloseInsert = () => setShowInsert(false);
+  const handlesetShowInsert = () => {
+    setShowInsert(true);
   };
 
   const handleTypeChange = (value: EntryType) => {
@@ -70,7 +68,7 @@ function Dashboard({ email }: emailProp) {
       // console.log(`Date is ${date}`);
       const requestBody: RequestEntry = {
         email: email,
-        id: "",
+        entryID: "",
         entryType: entryType,
         company: company,
         date: date,
@@ -92,7 +90,7 @@ function Dashboard({ email }: emailProp) {
         if (responseData.length > 0) {
           setEntries(responseData);
         }
-        setShowInsertForm(false);
+        setShowInsert(false);
       } else {
         console.error("Error inserting entry");
       }
@@ -119,38 +117,6 @@ function Dashboard({ email }: emailProp) {
   useEffect(() => {
     getEntries(); // get entries when user signs in
   }, [email]);
-
-  const handleEditEntry = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    try {
-      const requestBody: RequestEntry = {
-        email: email,
-        id: currentId,
-        entryType: entryType,
-        company: company,
-        date: date,
-        time: time,
-        // timestamp: toTimestampFormat(date, time),
-      };
-
-      // console.log(`RequestBody in Dashboard is ${JSON.stringify(requestBody)}`);
-
-      const response = await fetch(
-        `api/entry/editEntry?email=${email}&entryId=${currentId}`,
-        {
-          method: "PUT",
-          body: JSON.stringify(requestBody),
-        },
-      );
-
-      if (response.status == 200) {
-        await getEntries();
-        setShowEditForm(false);
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  }; // end of handleEditEntry
 
   const handleDeleteEntry = async (entryId: string) => {
     try {
@@ -203,7 +169,7 @@ function Dashboard({ email }: emailProp) {
                 <hr></hr>
                 <button
                   type="button"
-                  onClick={() => handleSetShowInsert()}
+                  onClick={() => handlesetShowInsert()}
                   className="accent-color text-black"
                 >
                   Insert Entry
@@ -238,7 +204,6 @@ function Dashboard({ email }: emailProp) {
                   <th scope="col">Company</th>
                   <th scope="col">Date</th>
                   <th scope="col">Time</th>
-                  <th scope="col">Edit</th>
                   <th scope="col">Clear</th>
                 </tr>
               </thead>
@@ -252,24 +217,11 @@ function Dashboard({ email }: emailProp) {
                       <td>{entry.date}</td>
                       <td>{entry.time}</td>
                       {/*<td>{entry.timestamp}</td>*/}
+                      {/*<td>{entry.timestamp}</td>*/}
                       <td>
                         <button
                           type="button"
-                          className="btn"
-                          onClick={() => {
-                            setCurrentId(entry.id);
-                            setShowEditForm(true);
-                          }}
-                          data-stoggle="modal"
-                          data-target="#exampleModal"
-                        >
-                          <i className="fa-solid fa-edit"></i>
-                        </button>
-                      </td>
-                      <td>
-                        <button
-                          type="button"
-                          onClick={() => handleDeleteEntry(entry.id)}
+                          onClick={() => handleDeleteEntry(entry.entryID)}
                           className="btn btn-danger btn-sm"
                           data-toggle="modal"
                           data-target="#exampleModal"
@@ -307,7 +259,7 @@ function Dashboard({ email }: emailProp) {
       </div>
 
       <Modal
-        show={showInsertForm}
+        show={showInsert}
         onHide={handleCloseInsert}
         className="delete-modal"
       >
@@ -316,70 +268,6 @@ function Dashboard({ email }: emailProp) {
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={(e) => handleInsertEntry(e)}>
-            <Form.Group className="mb-3" controlId="entryType">
-              <Form.Label>Type of Entry</Form.Label>
-              <Form.Control
-                as="select"
-                value={entryType}
-                onChange={(e) => handleTypeChange(e.target.value as EntryType)}
-              >
-                <option value="Application">Application</option>
-                <option value="Online Assessment">Online Assessment</option>
-                <option value="Interview">Interview</option>
-              </Form.Control>
-            </Form.Group>
-
-            <Form.Group className="mb-3" controlId="company">
-              <Form.Label>Company</Form.Label>
-              <Form.Control
-                placeholder="Company Name"
-                required
-                value={company}
-                onChange={(e) => setCompany(e.target.value)}
-              />
-            </Form.Group>
-
-            <Form.Group className="mb-3" controlId="date">
-              <Form.Label>Date</Form.Label>
-              <Form.Control
-                type="date"
-                required
-                value={date}
-                onChange={(e) => handleDateChange(e.target.value)}
-              />
-            </Form.Group>
-
-            <Form.Group className="mb-3" controlId="time">
-              <Form.Label>Time</Form.Label>
-              <Form.Control
-                type="time"
-                value={time}
-                onChange={(e) => handleTimeChange(e.target.value)}
-              />
-            </Form.Group>
-
-            <Button
-              variant="primary"
-              type="submit"
-              className="accent-color text-black"
-              // onClick={handleInsertEntry}
-            >
-              Submit
-            </Button>
-          </Form>
-        </Modal.Body>
-      </Modal>
-      {/*this modal will appear when the user wants to edit an entry*/}
-      <Modal
-        show={showEditForm}
-        onHide={() => setShowEditForm(false)}
-        className="delete-modal"
-      >
-        <Modal.Header closeButton>
-          <Modal.Title>Edit Entry</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form onSubmit={(e) => handleEditEntry(e)}>
             <Form.Group className="mb-3" controlId="entryType">
               <Form.Label>Type of Entry</Form.Label>
               <Form.Control

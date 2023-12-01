@@ -32,7 +32,7 @@ export const POST: APIRoute = async ({ request }) => {
       .doc();
 
     const entryData: FirebaseEntry = {
-      id: newEntryRef.id,
+      entryID: newEntryRef.id,
       entryType: requestData.entryType,
       company: requestData.company,
       date: requestData.date,
@@ -60,7 +60,7 @@ export const POST: APIRoute = async ({ request }) => {
       const data = doc.data() as FirebaseEntry;
       return [
         {
-          id: data.id,
+          entryID: data.entryID,
           entryType: data.entryType,
           company: data.company,
           date: data.date,
