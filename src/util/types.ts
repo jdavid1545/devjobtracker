@@ -1,5 +1,5 @@
 export type Entry = {
-  entryID: string;
+  id: string;
   entryType: EntryType;
   company: string;
   date: string;
@@ -7,7 +7,7 @@ export type Entry = {
 };
 
 export type FirebaseEntry = {
-  entryID: string;
+  id: string;
   entryType: EntryType;
   company: string;
   date: string;

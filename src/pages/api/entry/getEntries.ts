@@ -24,7 +24,7 @@ export const GET: APIRoute = async ({ request }) => {
       const data = doc.data() as FirebaseEntry;
       return [
         {
-          entryID: data.entryID,
+          id: data.id,
           entryType: data.entryType,
           company: data.company,
           date: data.date,
